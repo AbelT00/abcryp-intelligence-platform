@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABCryp | Alpha Intelligence Terminal</title>
+  <style>
+    /* ... [existing styles remain unchanged above] ... */
+    .converter {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 2rem;
+      border-radius: 1.5rem;
+      max-width: 500px;
+      margin: 3rem auto;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.25);
+      text-align: center;
+    }
+    .converter input, .converter select {
+      padding: 0.75rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+      width: 80%;
+      border: none;
+      border-radius: 8px;
+    }
+    .converter button {
+      margin-top: 1rem;
+      padding: 0.75rem 2rem;
+      background-color: #FCD34D;
+      color: #111;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    .converter button:hover {
+      background-color: #ffe47a;
+    }
+    .converter-result {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      color: #F3F4F6;
+    }
+  </style>
+  <script>
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      setTimeout(() => loader.style.display = 'none', 2500);
+    });
+
+    async function convertCurrency() {
+      const amount = parseFloat(document.getElementById('cadInput').value);
+      const crypto = document.getElementById('cryptoSelect').value;
+      const resultDiv = document.getElementById('conversionResult');
+      if (!amount || isNaN(amount)) return resultDiv.innerText = 'Enter a valid number.';
+      try {
+        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=cad`);
+        const data = await res.json();
+        const price = data[crypto].cad;
+        const cryptoAmount = (amount / price).toFixed(8);
+        resultDiv.innerText = `$${amount} CAD = ${cryptoAmount} ${crypto.toUpperCase()}`;
+      } catch (err) {
+        resultDiv.innerText = 'Conversion failed. Please try again later.';
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="loader">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/High_voltage_warning_symbol.svg/2048px-High_voltage_warning_symbol.svg.png" alt="Loading...">
+    <h2>Launching the terminal...</h2>
+  </div>
+
+  <header>
+    <h1>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/High_voltage_warning_symbol.svg/2048px-High_voltage_warning_symbol.svg.png" alt="ABCryp Logo" />
+      ABCryp
+    </h1>
+    <nav>
+      <a href="#">Dashboard</a>
+      <a href="#">Tokens</a>
+      <a href="#">Wallets</a>
+      <a href="#">Signals</a>
+      <a href="#">News</a>
+      <a href="#">Converter</a>
+      <a href="#">Login</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Welcome to ABCryp</h2>
+    <p>The most advanced galactic crypto intelligence terminal for tracking smart money, token signals, and on-chain alpha across the blockchain universe.</p>
+  </section>
+
+  <section class="section">
+    <div class="card-grid">
+      <div class="card">
+        <h3>📡 Live Wallet Tracking</h3>
+        <p>Monitor 650+ successful wallets across Ethereum, BSC, and Solana. Stay updated with real-time alpha buys and profitable movements.</p>
+      </div>
+      <div class="card">
+        <h3>🌌 Token Intelligence</h3>
+        <p>Search any token to discover wallet movements, profit curves, contract info, charts, and smart entry alerts.</p>
+      </div>
+      <div class="card">
+        <h3>🚀 Alpha Signal Engine</h3>
+        <p>Receive alerts when top wallets interact with new tokens. Entry detection, breakout forecasts, and signal strength included.</p>
+      </div>
+      <div class="card">
+        <h3>🛰️ Real-Time News</h3>
+        <p>Curated headlines from leading crypto news sources plus a live banner showcasing highest gainers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="converter">
+      <h3>💱 CAD to Crypto Converter</h3>
+      <input type="number" id="cadInput" placeholder="Enter CAD amount" />
+      <select id="cryptoSelect">
+        <option value="bitcoin">Bitcoin (BTC)</option>
+        <option value="ethereum">Ethereum (ETH)</option>
+        <option value="solana">Solana (SOL)</option>
+        <option value="dogecoin">Dogecoin (DOGE)</option>
+        <option value="pepe">Pepe (PEPE)</option>
+      </select><br>
+      <button onclick="convertCurrency()">Convert</button>
+      <div id="conversionResult" class="converter-result"></div>
+    </div>
+  </section>
+
+  <footer>
+    ABCryp © 2025 — Powered by Abel Tariku. Here to serve as the world’s most intelligent platform for on-chain trading excellence.
+  </footer>
+</body>
+</html>
